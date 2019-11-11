@@ -1,0 +1,158 @@
+#32 bit address
+#2 set 4 way associative
+#512 (64 x 8) bytes
+#Cache Size = 512
+#Block Size = 64
+#Cache Blocks = 8
+
+class cache:
+    index = 0
+    valid = False
+    tag = 0
+    data1 = 0
+    data2 = 0
+    data3 = 0
+    data4 = 0
+    lrutimer = 0
+    elements = 4 #[index, valid, tag, data]
+    block_number = 8
+    cache_block = [[0 for i in range(elements)] for j in range(blocks)] #2D array with elements as row, blocks as column
+    cache_lru = [[0 for i in range(elements)] for j in range(lrutimer)] #2D array with elements as row, lrutimer as column
+    set0 = [index, valid, tag]
+    set1= [index, valid, tag]
+    
+    def __init__(self, data, instructions):
+        # Member Variables:
+        self.__data = data
+        self.__instructions = instructions
+        self.__index = 0
+        self.__valid = False
+        self.__tag = 0
+        self.__ data1 = 0
+        self.__ data2 = 0
+        self.__data3 = 0
+        self.__data4 = 0
+        self.__lrutimer = 0
+        self.__cache_block = [[0 for i in range(elements)] for j in range(blocks)] #2D array with elements as row, blocks as column
+        self.__cache_lru = [[0 for i in range(elements)] for j in range(lrutimer)] #2D array with elements as row, lrutimer as column
+        self.__set0 = [index]
+        self.__set1= [index]
+        
+        pass
+
+    def tlb(virtual_address):
+        tag = virtual_page_number
+        if hit:
+            writethrough(self)
+        else:
+            #tag -> tlb	
+            memory.TLB_miss(address)
+            #Return physical address
+    def __read(data):
+        if block() and tag == 
+            tag == instruction
+            valid == True
+            block.data[offset]
+        else
+            memory.cache_miss(address)
+
+            #Return void
+    def __address_data(physical_address):
+        offset = physical_address[-1:-4] #3 bytes
+        index = physical_address[-4] #1 byte
+        tag = physical_address[0:28]
+        
+    def block():
+        #number_of_blocks = index
+        #512 bytes / 64 bytes
+        #2 sets, 4 way associative
+        
+        #blocks[8] = {000,001,010,011,100,101,110,111}
+        #set[0] = {000,001,010,011}
+        #set[1] = {100,101,110,111}
+        
+        for i in range(0,8):
+            binary = bin(i)
+            cache_block[i][0] = binary #Block indices
+            #First set indices
+            if str(binary[0]) = 0:
+                set0[i][0] = binary
+            #Second set indices
+            elif str(binary[0]) = 1:
+                set1[i][0] = binary
+                
+	
+    def block_search(self):
+        #Searches for available blocks
+        block()
+        #Idea 1: Counts blocks
+        for i in range(0,8):
+            if cache_block{index, tag[i]} == cache_block{index,tag[i+1]} and valid:
+                #cache hit
+                cache.__store
+                lru()
+            else: 
+                #cache miss
+                __valid == True
+                cache.__store
+                lru()
+        
+        #Idea 2: Counts Sets 0 and 1
+        for i in range(0,2):
+            if i = 0:
+                if cache_block[index, tag[i]] == cache_block[index,tag[i+1]] and valid:
+                    #cache hit
+                    cache.__store()
+                    lru()
+            else: 
+                #cache miss
+                cache.__store()
+                lru()
+\
+    def __store(physical_address):
+        block_search(physical_address)
+        
+        if block and cache_block[1] == False:
+            new block = block
+        if block and cache_block[1] == True:
+            __writemiss(self)
+        pass
+        #Return void
+    def lru():
+        #Every 8th cache element gets removed
+        if cache_lru[1] % 8 == 0:
+            cache_block[0] = cache_lru[0]
+            cache_block.remove[0]
+        
+        else:
+            cache_lru[1] += 1
+
+    def writethrough(physical_address):
+        #If the tags of two addresses match
+        #and first address' tag is in a block
+        #loads second address into the cache block
+        #and memory
+        if cache_block{tag} = cache_block{tag}:
+            #if tag1 in block:
+                #physical address of tag2 -> cache block
+                #physical address of tag2 -> memory
+        else:
+            memory.cache_miss(page_number, page_offset, process_physical_address)
+        
+        memory.write(address)
+        #Writes into memory
+        
+    def writemiss(physical_address):
+        index = physical_address[-4] #1 byte
+        tag = physical_address[0:28]
+
+        if index in cache_block[0] and tag in cache_block[1]:
+            memory.write(data)
+            
+        #Load block into memory and not cache
+        
+ class block:
+    cache_block = [index, valid, tag, data]
+    cache_lru = [index, lrutimer]
+    set0 = [index, valid, tag, data1, data2. data3, data4]
+    set1= [index, valid, tag, data1, data2. data3, data4]
