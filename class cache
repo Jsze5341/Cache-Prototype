@@ -16,10 +16,10 @@ class cache:
     lrutimer = 0
     elements = 4 #[index, valid, tag, data]
     block_number = 8
-    cache_block = [[0 for i in range(elements)] for j in range(blocks)] #2D array with elements as row, blocks as column
-    cache_lru = [[0 for i in range(elements)] for j in range(lrutimer)] #2D array with elements as row, lrutimer as column
-    set0 = [index, valid, tag]
-    set1= [index, valid, tag]
+    set_blocks = 4
+    cache_block = [[0 for i in range(elements)] for j in range(block_number)] #2D array with elements as row, blocks as column
+    cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
+    cache_set1 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
     
     def __init__(self, data, instructions):
         # Member Variables:
@@ -33,10 +33,10 @@ class cache:
         self.__data3 = 0
         self.__data4 = 0
         self.__lrutimer = 0
-        self.__cache_block = [[0 for i in range(elements)] for j in range(blocks)] #2D array with elements as row, blocks as column
+        self.__cache_block = [[0 for i in range(elements)] for j in range(block_number)] #2D array with elements as row, blocks as column
+        self.__cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
+        self.__cache_set1 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
         self.__cache_lru = [[0 for i in range(elements)] for j in range(lrutimer)] #2D array with elements as row, lrutimer as column
-        self.__set0 = [index]
-        self.__set1= [index]
         
         pass
 
