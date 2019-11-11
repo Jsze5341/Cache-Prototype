@@ -6,13 +6,6 @@
 #Cache Blocks = 8
 
 class cache:
-    index = 0
-    valid = False
-    tag = 0
-    data1 = 0
-    data2 = 0
-    data3 = 0
-    data4 = 0
     lrutimer = 0
     elements = 4 #[index, valid, tag, data]
     block_number = 8
@@ -20,6 +13,10 @@ class cache:
     cache_block = [[0 for i in range(elements)] for j in range(block_number)] #2D array with elements as row, blocks as column
     cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
     cache_set1 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
+    index = cache_block[0]
+    valid = cache_block[1]
+    tag = cache_block[2]
+    data = cache_block[3]
     
     def __init__(self, data, instructions):
         # Member Variables:
@@ -85,7 +82,7 @@ class cache:
                 set1[i][0] = binary
                 
 	
-    def block_search(self):
+    def block_search(physical_address):
         #Searches for available blocks
         block()
         #Idea 1: Counts blocks
@@ -100,10 +97,10 @@ class cache:
                 cache.__store
                 lru()
         
-        #Idea 2: Counts through Sets 0 and 1
+        #Idea 2: Counts through the 4 blocks of Sets 0 and 1
         for i in range(0,4):
             if i = 0:
-                if cache_set0[0][i] == cache_set0[0][i] and cache_set[1][i] = 1:
+                if cache_set0[0][i] =  and cache_set[1][i] = 1:
                     #cache hit
                     cache.__store()
                     lru()
@@ -115,9 +112,9 @@ class cache:
     def __store(physical_address):
         block_search(physical_address)
         
-        if block and cache_block[1] == False:
+        if block and cache_block[1] == 0: #cache_block[1] checks for validity
             new block = block
-        if block and cache_block[1] == True:
+        if block and cache_block[1] == 1:
             __writemiss(physical_address)
         pass
         #Return void
