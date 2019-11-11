@@ -30,8 +30,6 @@ class cache:
         self.__cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
         self.__cache_set1 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
         self.__cache_lru = [[0 for i in range(elements)] for j in range(lrutimer)] #2D array with elements as row, lrutimer as column
-        
-        pass
 
     def tlb(virtual_address):
         tag = virtual_page_number
@@ -54,7 +52,7 @@ class cache:
             #Return void
 
     def __offset(physical_address):
-	offset = physical_address[-1:-4] #3 bytes
+	offset = physical_address[-1] + physical_address[-2] + physical_address[-3] #3 bytes
 	
     def __index(physical_address):
     	index = physical_address[-4] #1 byte
@@ -141,22 +139,26 @@ class cache:
         #and first address' tag is in a block
         #loads second address into the cache block
         #and memory
-        if cache_block{tag} = cache_block{tag}:
-            #if tag1 in block:
-                #physical address of tag2 -> cache block
+	tag = cache.__tag(physical_address)
+	for i in range(0,4)
+            if cache_set0[i][2] = tag:
+               cache_set0[i][2] #physical address of tag2 -> cache block
                 #physical address of tag2 -> memory
-        else:
-            memory.cache_miss(page_number, page_offset, process_physical_address)
+            else:
+                memory.cache_miss(page_number, page_offset, process_physical_address)
         
         memory.write(address)
         #Writes into memory
         
     def writemiss(physical_address):
-        index = physical_address[-4] #1 byte
-        tag = physical_address[0:28]
+        index = cache.__index(physical_address)
+        tag = cache.__tag(physical_address)
 
-        if index in cache_block[0] and tag in cache_block[1]:
-            memory.write(data)
+	for i in range (0,4)
+            if cache_set0[i][0] != index and cache_set0[i][2] != tag: #if index and cache are not found in set0
+                memory.write(cache_set0[i][3]) # Writes data from given index in cache_set0
+	    if cache_set1[i][0] != index and cache_set0[i][2] != tag: #if index and cache are not found in set1
+                memory.write(cache_set1[i][3]) # Writes data from given index in cache_set1
             
         #Load block into memory and not cache
         
