@@ -52,11 +52,6 @@ class cache:
             memory.cache_miss(address)
 
             #Return void
-	    
-    def __address_data(physical_address):
-	offset = physical_address[-1:-4] #3 bytes
-	index = physical_address[-4] #1 byte
-	tag = physical_address[0:28] #Remaining bytes
 
     def __offset(physical_address):
 	offset = physical_address[-1:-4] #3 bytes
@@ -91,7 +86,7 @@ class cache:
         #Searches for available blocks
         block()
 	tag = cache.__tag(physical_address)
-        #Idea 1: Counts blocks
+        #Benched Idea 1: Counts blocks
         for i in range(0,8):
             if cache_block{index, tag[i]} == cache_block{index,tag[i+1]} and valid:
                 #cache hit
@@ -108,15 +103,17 @@ class cache:
             if i = 0:
                 if cache_set0[2][i] = tag and cache_set[1][i] = 1:
                     #cache hit
-                    cache.__store()
+                    cache.__store(physical_address)
+		    writethrough(physical_address)
                     lru()
 	        if cache_set1[2][i] = tag and cache_set[1][i] = 1:
 		    #cache hit
-                    cache.__store()
+                    cache.__store(physical_address)
+		    writethrough(physical_address)
                     lru()
                 else: 
                     #cache miss
-                    cache.__store()
+                    writemiss(physical_address)
                     lru()
 
     def __store(physical_address):
