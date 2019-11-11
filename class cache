@@ -46,8 +46,10 @@ class cache:
             writethrough(self)
         else:
             #tag -> tlb	
-            memory.TLB_miss(address)
+	    tlb(tag)
+            memory.TLB_miss(virtual_address)
             #Return physical address
+	    
     def __read(data):
         if block() and tag == 
             tag == instruction
@@ -57,10 +59,11 @@ class cache:
             memory.cache_miss(address)
 
             #Return void
+	    
     def __address_data(physical_address):
         offset = physical_address[-1:-4] #3 bytes
         index = physical_address[-4] #1 byte
-        tag = physical_address[0:28]
+        tag = physical_address[0:28] #Remaining bytes
         
     def block():
         #number_of_blocks = index
@@ -68,8 +71,8 @@ class cache:
         #2 sets, 4 way associative
         
         #blocks[8] = {000,001,010,011,100,101,110,111}
-        #set[0] = {000,001,010,011}
-        #set[1] = {100,101,110,111}
+        #set0[4] = {000,001,010,011}
+        #set1[4] = {100,101,110,111}
         
         for i in range(0,8):
             binary = bin(i)
@@ -97,10 +100,10 @@ class cache:
                 cache.__store
                 lru()
         
-        #Idea 2: Counts Sets 0 and 1
-        for i in range(0,2):
+        #Idea 2: Counts through Sets 0 and 1
+        for i in range(0,4):
             if i = 0:
-                if cache_block[index, tag[i]] == cache_block[index,tag[i+1]] and valid:
+                if cache_set0[0][i] == cache_set0[0][i] and cache_set[1][i] = 1:
                     #cache hit
                     cache.__store()
                     lru()
@@ -115,9 +118,10 @@ class cache:
         if block and cache_block[1] == False:
             new block = block
         if block and cache_block[1] == True:
-            __writemiss(self)
+            __writemiss(physical_address)
         pass
         #Return void
+	
     def lru():
         #Every 8th cache element gets removed
         if cache_lru[1] % 8 == 0:
