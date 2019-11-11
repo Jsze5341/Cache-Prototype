@@ -108,7 +108,7 @@ class cache:
                 #cache miss
                 cache.__store()
                 lru()
-\
+
     def __store(physical_address):
         block_search(physical_address)
         
@@ -152,7 +152,17 @@ class cache:
         #Load block into memory and not cache
         
  class block:
-    cache_block = [index, valid, tag, data]
-    cache_lru = [index, lrutimer]
-    set0 = [index, valid, tag, data1, data2. data3, data4]
-    set1= [index, valid, tag, data1, data2. data3, data4]
+    index = 0
+    valid = False
+    tag = 0
+    data1 = 0
+    data2 = 0
+    data3 = 0
+    data4 = 0
+    lrutimer = 0
+    elements = 4 #[index, valid, tag, data]
+    block_number = 8
+    set_blocks = 4
+    cache_block = [[0 for i in range(elements)] for j in range(block_number)] #2D array with elements as row, blocks as column
+    cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
+    cache_set1 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
