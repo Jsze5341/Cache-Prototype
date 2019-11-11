@@ -1,6 +1,6 @@
 #32 bit address
 #2 set 4 way associative
-#512 (64 x 8) bytes
+#512 (64 bytes x 8 blocks) bytes
 #Cache Size = 512
 #Block Size = 64
 #Cache Blocks = 8
@@ -54,10 +54,19 @@ class cache:
             #Return void
 	    
     def __address_data(physical_address):
-        offset = physical_address[-1:-4] #3 bytes
-        index = physical_address[-4] #1 byte
-        tag = physical_address[0:28] #Remaining bytes
-        
+	offset = physical_address[-1:-4] #3 bytes
+	index = physical_address[-4] #1 byte
+	tag = physical_address[0:28] #Remaining bytes
+
+    def __offset(physical_address):
+	offset = physical_address[-1:-4] #3 bytes
+	
+    def __index(physical_address):
+    	index = physical_address[-4] #1 byte
+	
+    def __tag(physical_address):
+    	tag = physical_address[0:28] #Remaining bytes
+   
     def block():
         #number_of_blocks = index
         #512 bytes / 64 bytes
@@ -81,6 +90,7 @@ class cache:
     def block_search(physical_address):
         #Searches for available blocks
         block()
+	tag = cache.__tag(physical_address)
         #Idea 1: Counts blocks
         for i in range(0,8):
             if cache_block{index, tag[i]} == cache_block{index,tag[i+1]} and valid:
@@ -96,14 +106,18 @@ class cache:
         #Idea 2: Counts through the 4 blocks of Sets 0 and 1
         for i in range(0,4):
             if i = 0:
-                if cache_set0[0][i] =  and cache_set[1][i] = 1:
+                if cache_set0[2][i] = tag and cache_set[1][i] = 1:
                     #cache hit
                     cache.__store()
                     lru()
-            else: 
-                #cache miss
-                cache.__store()
-                lru()
+	        if cache_set1[2][i] = tag and cache_set[1][i] = 1:
+		    #cache hit
+                    cache.__store()
+                    lru()
+                else: 
+                    #cache miss
+                    cache.__store()
+                    lru()
 
     def __store(physical_address):
         block_search(physical_address)
