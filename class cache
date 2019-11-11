@@ -20,15 +20,11 @@ class cache:
     
     def __init__(self, data, instructions):
         # Member Variables:
-        self.__data = data
         self.__instructions = instructions
-        self.__index = 0
-        self.__valid = False
-        self.__tag = 0
-        self.__ data1 = 0
-        self.__ data2 = 0
-        self.__data3 = 0
-        self.__data4 = 0
+        self.__index = cache_block[0]
+        self.__valid = cache_block[1]
+        self.__tag = cache_block[2]
+        self.__ data = cache_block[3]
         self.__lrutimer = 0
         self.__cache_block = [[0 for i in range(elements)] for j in range(block_number)] #2D array with elements as row, blocks as column
         self.__cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
