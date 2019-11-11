@@ -99,12 +99,12 @@ class cache:
         #Idea 2: Counts through the 4 blocks of Sets 0 and 1
         for i in range(0,4):
             if i = 0:
-                if cache_set0[2][i] = tag and cache_set[1][i] = 1:
+                if cache_set0[2][i] = tag and cache_set[1][i] = 1: # If inputted physical address' tag and validity matches set0
                     #cache hit
                     cache.__store(physical_address)
 		    writethrough(physical_address)
                     lru()
-	        if cache_set1[2][i] = tag and cache_set[1][i] = 1:
+	        if cache_set1[2][i] = tag and cache_set[1][i] = 1: # If inputted physical address' tag and validity matches set1
 		    #cache hit
                     cache.__store(physical_address)
 		    writethrough(physical_address)
