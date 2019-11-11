@@ -127,6 +127,7 @@ class cache:
         if cache_lru[1] % 8 == 0:
             cache_block[0] = cache_lru[0]
             cache_block.remove[0]
+	    cache_lru[1] += 1
         
         else:
             cache_lru[1] += 1
