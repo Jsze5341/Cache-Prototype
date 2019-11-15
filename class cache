@@ -401,13 +401,15 @@ class tlb:
                 physical_address = str(physical_page_number) + str(physical_offset)
                 return physical_address
                 tlb_lru(self, virtual_address)
-                #self.__tlb[i][1] -> page_table # Reference bit copies to page table
-                #self.__tlb[i][2] -> page_table # Dirty bit copies to page table
+                
+		break
             else:
                 
                 self.__miss = False
                 self.__misshitnumber += 1
                 tlb_lru(self, virtual_address)
+		
+		break
                 
     def tlb_lru(self, virtual_address):
         virtual_page_number = tlb.__virtual_offset(self, virtual_address)
@@ -427,10 +429,14 @@ class tlb:
                 self.__tlb[i][0] = 0
                 self.__tlb[i][1] = 0
                 self.__tlb[i][2] = 0
+		
+		break
         
             else:
                 # Increments lru timer otherwise
                 self.__tlb[i][3] += 1
+		
+		break
 	    
 
         
