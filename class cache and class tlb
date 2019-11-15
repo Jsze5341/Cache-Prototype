@@ -1,3 +1,10 @@
+#Author: Jordan Sze
+
+# Cache Information:
+# 32 bit physical address
+# 2 set 4 way associative
+# 512 (64 bytes x 8 blocks) bytes
+# Cache Size = 512 bytes
 # Block Size = 64 bytes
 # Cache Blocks = 8
 
