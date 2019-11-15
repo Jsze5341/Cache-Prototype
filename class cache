@@ -1,179 +1,450 @@
-#32 bit address
-#2 set 4 way associative
-#512 (64 bytes x 8 blocks) bytes
-#Cache Size = 512
-#Block Size = 64
-#Cache Blocks = 8
+# Block Size = 64 bytes
+# Cache Blocks = 8
+#
+# TLB Information:
+# 64 bit virtual address
+# 4 block fully associative 
 
-class cache:
-    lrutimer = 0
-    elements = 4 #[index, valid, tag, data]
-    block_number = 8
-    set_blocks = 4
-    cache_block = [[0 for i in range(elements)] for j in range(block_number)] #2D array with elements as row, blocks as column
-    cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
-    cache_set1 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
-    index = cache_block[0]
-    valid = cache_block[1]
-    tag = cache_block[2]
-    data = cache_block[3]
-    
-    def __init__(self, data, instructions):
-        # Member Variables:
-        self.__instructions = instructions
-        self.__index = cache_block[0]
-        self.__valid = cache_block[1]
-        self.__tag = cache_block[2]
-        self.__ data = cache_block[3]
-        self.__lrutimer = 0
-        self.__cache_block = [[0 for i in range(elements)] for j in range(block_number)] #2D array with elements as row, blocks as column
+class cache:       
+    def __init__(self):
+        # For any row i in range:
+        # index = cache_set0[i][0], cache_set1[i][0]
+        # valid =  cache_set0[i][1], cache_set1[i][1]]
+        # tag =  cache_set0[i][2], cache_set1[i][2]
+        # offset =  cache_set0[i][3], cache_set1[i][3]
+        # lrutimer = cache_set0[i][4], cache_set1[i][4]
+            
+        elements = 5 #[index, valid, tag, offset, lrutimer]
+        set_blocks = 4 # Number of blocks in a set
+        self.__physical_address = ""
+        self.__virtual_address = ""
+        self.miss = True #True = Miss, False = Hit
         self.__cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
         self.__cache_set1 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
-        self.__cache_lru = [[0 for i in range(elements)] for j in range(lrutimer)] #2D array with elements as row, lrutimer as column
+        self.__missnumber = 0 # Number of misses
+        self.__misshitnumber = 0 # Number of hits and misses
+        self.__replacenumber = 0 # Number of replacements
+        self.__memory = []
+        
+        
+        # Index of each row:
+        # set0[4] = {0,..}{0,..}{0,..}{0,..}
+        # set1[4] = {1,..}{1,..}{1,..}{1,..}
+        
+        # Defines indices in cache_set0, cache_set1,
+        for i in range(0,4):
+            binary = bin(i)
+            binary = binary[2:]
+            self.__cache_set0[i][0] = 0
+            
+        for i in range(0,4):
+            binary = bin(i + 4)
+            binary = binary[2:]
+            self.__cache_set1[i][0] = 1
+ 
+    def initialize_cache(self, physical_address):
+        self.read(physical_address)
+        self.block_search(physical_address)
+        
+    def read(self, physical_address):
+        for i in range(0,4):
+            tag = cache.__tag(physical_address)
+            
+            # Checks if set0 or set1 has the tag attempted
+            # to be read and returns whether a 
+            # miss occurs or not
+            if self.__cache_set0[i][2] == tag and self.__cache_set0[i][1] == 1: # cache_set0[i][1] checks for validity
+                if self.__cache_set0[i][4] % 8 != 0: # If the index is not to be removed by the lrutimer
+                    offset = cache.__offset(physical_address)
+                    self.__miss = True
+                    self.__missnumber += 1
+                    self.__misshitnumber += 1
+                    memory.cache_miss(physical_address)
+                    return offset, self.__miss       
+                    
+            elif self.__cache_set1[i][2] == tag and self.__cache_set1[i][1] == 1: # cache_set1[i][1] checks for validity
+                if self.__cache_set1[i][4] % 8 != 0: # If the index is not to be removed by the lrutimer
+                    offset = cache.__offset(physical_address)
+                    self.__miss = True
+                    self.__missnumber += 1
+                    self.__misshitnumber += 1
+                    memory.cache_miss(physical_address)
+                    return offset, self.__miss
 
-    def tlb(virtual_address):
-        tag = virtual_page_number
-        if hit:
-            writethrough(self)
-        else:
-            #tag -> tlb	
-	    tlb(tag)
-            memory.TLB_miss(virtual_address)
-            #Return physical address
-	    
-    def __read(data):
-        if block() and tag == 
-            tag == instruction
-            valid == True
-            block.data[offset]
-        else
-            memory.cache_miss(address)
-
-            #Return void
+        # If no match is found, returns a hit
+        self.__miss = False
+        self.__misshitnumber += 1
+        return self.__miss
 
     def __offset(physical_address):
-	offset = physical_address[-1] + physical_address[-2] + physical_address[-3] #3 bytes
+        # Defines offset bits
+        offset = physical_address[-1] + physical_address[-2] + physical_address[-3] #3 bytes
+        return offset
 	
     def __index(physical_address):
-    	index = physical_address[-4] #1 byte
+        # Defines index bits
+        index = physical_address[-4] # 1 byte
+        return index
 	
     def __tag(physical_address):
-    	tag = physical_address[0:28] #Remaining bytes
-   
-    def block():
-        #number_of_blocks = index
-        #512 bytes / 64 bytes
-        #2 sets, 4 way associative
+        # Defines tag bits
+        tag = physical_address[0:28] # Remaining bytes
+        return tag
+            	
+    def block_search(self, physical_address):
+        tag = cache.__tag(physical_address)
         
-        #blocks[8] = {000,001,010,011,100,101,110,111}
-        #set0[4] = {000,001,010,011}
-        #set1[4] = {100,101,110,111}
+        print("--------------------------------------------------")
+        print("Physical Address = ", physical_address)
         
-        for i in range(0,8):
-            binary = bin(i)
-            cache_block[i][0] = binary #Block indices
-            #First set indices
-            if str(binary[0]) = 0:
-                set0[i][0] = binary
-            #Second set indices
-            elif str(binary[0]) = 1:
-                set1[i][0] = binary
-                
-	
-    def block_search(physical_address):
-        #Searches for available blocks
-        block()
-	tag = cache.__tag(physical_address)
-        #Benched Idea 1: Counts blocks
-        for i in range(0,8):
-            if cache_block{index, tag[i]} == cache_block{index,tag[i+1]} and valid:
-                #cache hit
-                cache.__store
-                lru()
-            else: 
-                #cache miss
-                __valid == True
-                cache.__store
-                lru()
-        
-        #Idea 2: Counts through the 4 blocks of Sets 0 and 1
+        # Counts through the 4 blocks of Sets 0 and 1
         for i in range(0,4):
-            if i = 0:
-                if cache_set0[2][i] = tag and cache_set[1][i] = 1: # If inputted physical address' tag and validity matches set0
-                    #cache hit
-                    cache.__store(physical_address)
-		    writethrough(physical_address)
-                    lru()
-	        if cache_set1[2][i] = tag and cache_set[1][i] = 1: # If inputted physical address' tag and validity matches set1
-		    #cache hit
-                    cache.__store(physical_address)
-		    writethrough(physical_address)
-                    lru()
-                else: 
-                    #cache miss
-                    writemiss(physical_address)
-                    lru()
+            # If inputted physical address' tag matches that of set0 and is valid..
+            if self.__cache_set0[i][2] == tag and self.__cache_set[1][i] == 1: 
+                # Then cache hit and applies store and hit operations
+                self.__cache_miss = False
+                self.__misshitnumber += 1
+                self.__store(physical_address)
+                print("--------------------------------------------------")
+                print("|CACHE STATE|")
+                print(" Set 0 Block", i, "Hit")
+                print("Set 0", self.__cache_set0)
+                print("Set 1", self.__cache_set1)
+                writethrough(self, physical_address)
+                
+                # Prints miss hit ratio
+                miss = self.__missnumber
+                total = self.__misshitnumber
+                misshitratio = miss/total
+                print(misshitratio)
+                               
+                break
+            # If inputted physical address' tag matches that of set1 and is valid..
+            if self.__cache_set1[i][2] == tag and self.__cache_set[1][i] == 1: 
+                # Then cache hit and applies store and hit operations
+                self.__cache_miss = False
+                self.__misshitnumber += 1
+                self.__store(physical_address)
+                print("--------------------------------------------------")
+                print("|CACHE STATE|")
+                print(" Set 1 Block", i, "Hit")
+                print("Set 0", self.__cache_set0)
+                print("Set 1", self.__cache_set1)
+                self.writethrough(physical_address)
+                
+                # Prints miss hit ratio
+                miss = self.__missnumber
+                total = self.__misshitnumber
+                misshitratio = miss/total
+                print(misshitratio)
+                
+                break
+            # If no tag matches..
+            else: 
+                # Then cache miss and applies store and miss operations
+                self.__store(physical_address)
+                self.__cache_miss = True
+                self.__missnumber += 1
+                self.__misshitnumber += 1
+                print("--------------------------------------------------")
+                print("|CACHE STATE|")
+                print(" Cache Miss")
+                print("Set 0", self.__cache_set0)
+                print("Set 1", self.__cache_set1)
+                self.writemiss(physical_address)   
+                
+                # Prints miss hit ratio
+                miss = self.__missnumber
+                total = self.__misshitnumber
+                misshitratio = miss/total
+                print(misshitratio)
+                
+                break
+                
 
-    def __store(physical_address):
-        block_search(physical_address)
+    def __store(self, physical_address):
+    
+        index = cache.__index(physical_address)
+        index = int(index)
         
-        if block and cache_block[1] == 0: #cache_block[1] checks for validity
-            new block = block
-        if block and cache_block[1] == 1:
-            __writemiss(physical_address)
-        pass
-        #Return void
+        i = 0
+        
+        while i < 4:
+            # If corresponding block of cache_set0 is not valid and index of set and address matches
+            if self.__cache_set0[i][1] == 0 and self.__cache_set0[i][0] == index: 
+                tag = cache.__tag(physical_address)
+                tag = int(tag)
+                index = cache.__index(physical_address)
+                index = int(index)
+                offset = cache.__offset(physical_address)
+                offset = int(offset)
+                valid = 1
+                
+                # Stores current address' data in corresponding block of set0
+                self.__cache_set0[i][1] = valid
+                self.__cache_set0[i][2] = tag
+                self.__cache_set0[i][3] = offset
+                
+                break
+                
+            # If corresponding block of cache_set1 is not valid and index of set and address matches
+            elif self.__cache_set1[i][1] == 0 and self.__cache_set1[i][0] == index: 
+                tag = cache.__tag(physical_address)
+                tag = int(tag)
+                index = cache.__index(physical_address)
+                index = int(index)
+                offset = physical_address
+                offset = int(offset)
+                valid = 1
+                
+                # Stores current address' data in corresponding block of set1
+                self.__cache_set1[i][1] = valid
+                self.__cache_set1[i][2] = tag
+                self.__cache_set1[i][3] = offset
+                
+                break
+
+            else:
+                i += 1
+                
+        self.lru(physical_address)
 	
-    def lru():
-        #Every 8th cache element gets removed
-        if cache_lru[1] % 8 == 0:
-            cache_block[0] = cache_lru[0]
-            cache_block.remove[0]
-	    cache_lru[1] += 1
+    def lru(self, physical_address):
+        # Every 4th cache element onward gets removed
+        offset = cache.__offset(physical_address)
+        offset = int(offset)
+        index = cache.__index(physical_address)
+        index = int(index)
+        tag = cache.__tag(physical_address)
+        tag = int(tag)
         
-        else:
-            cache_lru[1] += 1
+        # Searches each cache set's lru timer
+        # If it reaches 4, the block's data
+        # is then removed by setting its
+        # elements to 0
+        i = 0
+        while i < 4:               
+            if self.__cache_set0[i][4] % 4 == 0 and self.__cache_set0[i][4] > 0:
+                self.__cache_set0[i][1] = 1
+                tag = self.__cache_set0[i][2]
+                offset = self.__cache_set0[i][3]
+                lrutimer = self.__cache_set0[i][4]
+                
+                self.__cache_set0[i][1] = 0
+                self.__cache_set0[i][2] = 0
+                self.__cache_set0[i][3] = 0
+                self.__cache_set0[i][4] = 0  
+                
+                self.__replacenumber += 1
+                print("Block removed from: Set 0 Block", i + 1)
+                print("Number of Replacements:", self.__replacenumber)
+                print("---")
+                
+                i += 1
+
+            elif self.__cache_set1[i][4] % 4 == 0 and self.__cache_set1[i][4] > 0:
+                self.__cache_set1[i][1] = 1
+                tag = self.__cache_set1[i][2]
+                offset = self.__cache_set1[i][3]
+                lrutimer = self.__cache_set1[i][4]
+                
+                self.__cache_set1[i][1] = 0
+                self.__cache_set1[i][2] = 0
+                self.__cache_set1[i][3] = 0
+                self.__cache_set1[i][4] = 0
+                
+                self.__replacenumber += 1
+                print("Block removed from: Set 1 Block", i + 1)
+                print("Number of Replacements:", self.__replacenumber)
+                print("---")
+                
+                i += 1
+                
+                
+            # Increments lru timer otherwise
+            elif self.__cache_set0[i][1] == 1:
+                self.__cache_set0[i][4] += 1  
+                i += 1
+
+            elif self.__cache_set1[i][1] == 1:
+                self.__cache_set1[i][4] += 1
+                i += 1
+                
+            else:
+                i += 1
 
     def writethrough(physical_address):
-        #If the tags of two addresses match
-        #and first address' tag is in a block
-        #loads second address into the cache block
-        #and memory
-	tag = cache.__tag(physical_address)
-	for i in range(0,4)
-            if cache_set0[i][2] = tag:
-               cache_set0[i][2] #physical address of tag2 -> cache block
-                #physical address of tag2 -> memory
-            else:
-                memory.cache_miss(page_number, page_offset, process_physical_address)
-        
-        memory.write(address)
-        #Writes into memory
-        
-    def writemiss(physical_address):
-        index = cache.__index(physical_address)
+        # If the tags of two addresses match
+        # and first address' tag is in a block
+        # loads second address into the cache block
+        # and memory
         tag = cache.__tag(physical_address)
-
-	for i in range (0,4)
-            if cache_set0[i][0] != index and cache_set0[i][2] != tag: #if index and cache are not found in set0
-                memory.write(cache_set0[i][3]) # Writes data from given index in cache_set0
-	    if cache_set1[i][0] != index and cache_set0[i][2] != tag: #if index and cache are not found in set1
-                memory.write(cache_set1[i][3]) # Writes data from given index in cache_set1
-            
-        #Load block into memory and not cache
+        tag = int(tag)
         
- class block:
-    index = 0
-    valid = False
-    tag = 0
-    data1 = 0
-    data2 = 0
-    data3 = 0
-    data4 = 0
-    lrutimer = 0
-    elements = 4 #[index, valid, tag, data]
-    block_number = 8
-    set_blocks = 4
-    cache_block = [[0 for i in range(elements)] for j in range(block_number)] #2D array with elements as row, blocks as column
-    cache_set0 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
-    cache_set1 = [[0 for i in range(elements)] for j in range(set_blocks)] #2D array with elements as row, set_blocks as column
+        for i in range(0,4):
+                if self.__cache_set0[i][2] == tag:
+                    offset = cache.__offset(physical_address)
+                    offset = int(offset)
+                    tag = cache.__tag(physical_address)
+                    tag = int(tag)
+                    
+                    # Corresponding physical address data of tag -> cache block
+                    tag = self.__cache_set[i][2]
+                    offset = self.__cache_set[i][3]
+                    
+                    self.__memory.append(physical_address) # Corresponding physical address of tag -> memory
+                    break
+                    
+                elif self.__cache_set1[i][2] == tag:
+                    offset = cache.__offset(physical_address)
+                    offset = int(offset)
+                    tag = cache.__tag(physical_address)
+                    tag = int(tag)
+                    
+                    self.__memory.append(physical_address)  # Corresponding physical address of tag -> memory
+                    
+                    # Corresponding physical address data of tag -> cache block
+                    tag = self.__cache_set[i][2]
+                    offset = self.__cache_set[i][3]
+                    break
+        
+        # Writes into memory
+        memory.write(address) 
+        
+    def writemiss(self, physical_address):
+        index = cache.__index(physical_address)
+        index = int(index)
+        tag = cache.__tag(physical_address)
+        tag = int(tag)
+
+        # If index and tag are not found in set0 or set1, writes physical_address
+        # from given index in set0 or set1 into memory
+        for i in range (0,4):
+            if self.__cache_set0[i][0] != index and self.__cache_set0[i][2] != tag: 
+                self.__memory.append(physical_address) 
+                break
+            if self.__cache_set1[i][0] != index and self.__cache_set0[i][2] != tag: 
+                self.__memory.append(physical_address) 
+                break
+        print("")
+        print("Memory:", self.__memory)
+        
+
+class tlb:
+    # 64 bit virtual address
+    
+    def __init__(self, virtual_address):
+        # For any row i in range:
+        # virtual page number = tlb[i][0]
+        # valid = tlb[i][1]
+        # dirty = tlb[i][2]
+        # offset = tlb[i][3]
+        # lrutimer = tlb[i][4]
+            
+        elements = 3 # TLB -> [tag, physical page number, lrutimer]
+                     # Virtual address -> [virtual page number, offset, lrutimer]
+                     # Physical address -> [physical page number, offset, lrutimer]
+        block_number = 4 #Number of blocks in tlb
+        self.__virtual_address = ""
+        self.__miss = True #True = Miss, False = Hit
+        self.__virtual = [elements]
+        self.__physical = [elements] 
+        self.__tlb = [[0 for i in range(elements)] for j in range(1)] #Array with elements as row, block_number as column
+        self.__missnumber = 0 # Number of misses
+        self.__misshitnumber = 0 # Number of hits and misses
+
+            
+    def __virtual_page_number(self, virtual_address):
+        # Defines virtual page number
+        virtual_page_number = virtual_address[0:53] # 52 bytes
+        return virtual_page_number
+        
+    def __virtual_offset(self, virtual_address):
+        # Defines offset of virtual address
+        virtual_offset = virtual_address[53:65] # 12 bytes
+        return virtual_offset
+        
+    def __physical_page_number(self, physical_address):
+        # Defines physical page number
+        physical_page_number = physical_address[0:21] # 20 bytes
+        return physical_page_number
+    
+    def __physical_offset(self, physical_address):
+        # Defines offset of physical address
+        physical_offset = physical_address[21:32] # 12 bytes
+        return physical_offset
+        
+    def search_tlb(self, virtual_address, physical_page_address):
+        virtual_page_number = tlb.__virtual_offset(self, virtual_address)
+        virtual_page_number = int(virtual_page_number)
+        virtual_offset = tlb.__virtual_offset(self, virtual_address)
+        virtual_offset = int(offset)
+        
+        # If a block has no virtual page number or offset,
+        # stores virtual page number and offset
+        # of inputted virtual address
+        for i in range(0,4):
+            if self.__tlb[i][0] == 0 and self.__tlb[i][1] == 0:
+                physical_page_number = tlb.__physical_page_number(self, physical_page_address)
+                physical_page_number = int(physical_page_number)
+                physical_offset = tlb.__physical_offset(self, physical_page_address)
+                physical_offset = int(physical_offset)
+                self.__tlb[i][0] = virtual_page_number # TLB's tag is virtual page number
+                self.__tlb[i][1] = physical_page_number # TLB's physical page number is physical page number of input
+                self.__miss = True
+                self.__missnumber += 1
+                self__tlb[i][2] += 1 # Increments lru timer
+                # Physical address data put into physical's corresponding elements
+                self.__physical[0] = physical_page_number
+                self.__physical[1] = phyaical_offset
+                # Concatenates physical address data and returns it
+                physical_address = str(physical_page_number) + str(physical_offset)
+                return physical_address
+                tlb_lru(self, virtual_address)
+                #self.__tlb[i][1] -> page_table # Reference bit copies to page table
+                #self.__tlb[i][2] -> page_table # Dirty bit copies to page table
+            else:
+                
+                self.__miss = False
+                self.__misshitnumber += 1
+                tlb_lru(self, virtual_address)
+                
+    def tlb_lru(self, virtual_address):
+        virtual_page_number = tlb.__virtual_offset(self, virtual_address)
+        virtual_page_number = int(virtual_page_number)
+        offset = tlb.__virtual_offset(self, virtual_address)
+        offset = int(offset)
+        
+        # Searches each tlb's lru timer
+        # If it reaches 4, the block's data
+        # gets returned, followed by the
+        # removal of its data by setting its
+        # elements to 0
+        for i in range(0,4):
+            if self.__tlb[i][3] % 4 == 0:
+                return self.__tlb[i]
+                
+                self.__tlb[i][0] = 0
+                self.__tlb[i][1] = 0
+                self.__tlb[i][2] = 0
+        
+            else:
+                # Increments lru timer otherwise
+                self.__tlb[i][3] += 1
+	    
+
+        
+if __name__ == '__main__':      
+    # Simulates collection of physical addresses
+    memory = ["00000000000000000000001101101101", "00000000000000000000000011101101", "00000000000000000000001101101001",
+             "00000000000000000000001100001101", "00000000000000000000001001100100", "00000000000000011110001001100100",
+             "00000000000000000001011100000100", "00000000000000000001011100110100"]
+             
+    c = cache()
+    i = 0  
+    
+    while i < len(memory):
+        physical_address = memory[i]
+        c.block_search(physical_address)
+        i += 1
+        
