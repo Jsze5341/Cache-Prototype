@@ -309,7 +309,9 @@ class cache:
                     break
         
         # Writes into memory
-        memory.write(address) 
+        self.__memory.append(physical_address))
+        print("")
+        print("Memory:", self.__memory) 
         
     def writemiss(self, physical_address):
         index = cache.__index(physical_address)
