@@ -24,7 +24,7 @@ class cache:
         self.__missnumber = 0 # Number of misses
         self.__misshitnumber = 0 # Number of hits and misses
         self.__replacenumber = 0 # Number of replacements
-        self.__memory = []
+        self.__memory = [] # Simulates memory
         
         
         # Index of each row:
