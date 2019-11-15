@@ -209,8 +209,8 @@ class cache:
                 
         self.lru(physical_address)
 	
+    # Every 4th cache element onward gets removed
     def lru(self, physical_address):
-        # Every 4th cache element onward gets removed
         offset = cache.__offset(physical_address)
         offset = int(offset)
         index = cache.__index(physical_address)
