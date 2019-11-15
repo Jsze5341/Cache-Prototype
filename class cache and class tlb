@@ -31,7 +31,7 @@ class cache:
         # set0[4] = {0,..}{0,..}{0,..}{0,..}
         # set1[4] = {1,..}{1,..}{1,..}{1,..}
         
-        # Defines indices in cache_set0, cache_set1,
+        # Defines indices in cache_set0, cache_set1
         for i in range(0,4):
             binary = bin(i)
             binary = binary[2:]
