@@ -52,7 +52,7 @@ class cache:
             
             # Checks if set0 or set1 has the tag attempted
             # to be read and returns whether a 
-            # miss occurs or not
+            # miss occurs or not as well as its data
             if self.__cache_set0[i][2] == tag and self.__cache_set0[i][1] == 1: # cache_set0[i][1] checks for validity
                 if self.__cache_set0[i][4] % 8 != 0: # If the index is not to be removed by the lrutimer
                     offset = cache.__offset(physical_address)
