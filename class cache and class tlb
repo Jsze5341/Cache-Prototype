@@ -59,7 +59,7 @@ class cache:
                     self.__miss = True
                     self.__missnumber += 1
                     self.__misshitnumber += 1
-                    memory.cache_miss(physical_address)
+                    self.writemiss(physical_address)
                     return offset, self.__miss       
                     
             elif self.__cache_set1[i][2] == tag and self.__cache_set1[i][1] == 1: # cache_set1[i][1] checks for validity
@@ -68,7 +68,7 @@ class cache:
                     self.__miss = True
                     self.__missnumber += 1
                     self.__misshitnumber += 1
-                    memory.cache_miss(physical_address)
+                    self.writemiss(physical_address)
                     return offset, self.__miss
 
         # If no match is found, returns a hit
