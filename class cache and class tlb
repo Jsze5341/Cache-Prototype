@@ -1,6 +1,6 @@
 # Block Size = 64 bytes
 # Cache Blocks = 8
-#
+
 # TLB Information:
 # 64 bit virtual address
 # 4 block fully associative 
